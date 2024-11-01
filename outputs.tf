@@ -18,12 +18,12 @@ output "public_key_filename" {
   description = "Public Key Filename"
 
   # Prevent releasing filename to downstream consumers until file exists (aka not during plan):
-  value = length(join("", tls_private_key.default[*].public_key_openssh)) > 0 ? local.public_key_filename : local.public_key_filename
+  value = var.write_ssh_key ? length(join("", tls_private_key.default[*].public_key_openssh)) > 0 ? local.public_key_filename : local.public_key_filename : null
 }
 
 output "private_key_filename" {
   description = "Private Key Filename"
 
   # Prevent releasing filename to downstream consumers until file exists (aka not during plan):
-  value = (join("", tls_private_key.default[*].public_key_openssh)) > 0 ? local.private_key_filename : local.private_key_filename
+  value = var.write_ssh_key ? (join("", tls_private_key.default[*].public_key_openssh)) > 0 ? local.private_key_filename : local.private_key_filename : null
 }
